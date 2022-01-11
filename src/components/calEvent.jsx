@@ -4,13 +4,10 @@ import moment from "moment";
 import { format, compareAsc, parse } from "date-fns";
 
 
-const Event = ({ day, priority, name, setTime }) => {
+const Event = ({  priority, name, setTime }) => {
   
 
 
-const form = 'P';
-let pickedDate = "";
-pickedDate = format(day, form);
 
 const priorityType = ["red", "orange", "yellow", "green"];
 

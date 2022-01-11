@@ -11,11 +11,26 @@ import endOfWeek from "date-fns/endOfWeek";
 import endOfMonth from "date-fns/endOfMonth";
 import { format, compareAsc, parse } from "date-fns";
 import Event from './calEvent';
-import PopupMenu from "./popupMenu";
+import PopupCard from './popupCard';
 
 export default class Cell extends Component {
  
+ renderCard = () => {
+
+
+    return (
+      
+      <PopupCard/>
+      
+    );
+
+
+
+
+ }
  
+
+
  
     renderEvents = () => {
         if(this.props.events == undefined || this.props.events == null || this.props.events.length == 0)
@@ -25,7 +40,7 @@ export default class Cell extends Component {
     return this.props.events.map((dayEvent) => {
       return (
         
-          <Event key={dayEvent} day={this.props.i} priority={dayEvent.priority} name={dayEvent.name} setTime={dayEvent.setTime} />
+          <Event key={dayEvent} priority={dayEvent.priority} name={dayEvent.name} setTime={dayEvent.setTime} />
         
       );
     });
@@ -46,11 +61,12 @@ export default class Cell extends Component {
         key={"cell_" + this.props.i}
         onClick={() => {
           this.props.onDateClick(this.props.cloneDay);
+        //  this.props.handleAddMenu(this.props.i);
           
-       //   this.props.handleAddEvent(this.props.i);
+          this.props.handleAddEvent(this.props.i);
         }}
       >
-         <PopupMenu handleMenuEvent={() => this.}/>
+        {this.renderCard()}
         {this.renderEvents()}
         <span className="number">{this.props.formattedDate}</span>
         <span className="bg">{this.props.formattedDate}</span>

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes, useEffect,useState } from "react";
+import React, { Component, PropTypes, useEffect, useState } from "react";
 import Event from "./calEvent";
 import $ from "jquery";
 import Modal from "@material-ui/core/Modal";
@@ -13,18 +13,21 @@ import startOfMonth from "date-fns/startOfMonth";
 import endOfWeek from "date-fns/endOfWeek";
 import endOfMonth from "date-fns/endOfMonth";
 import { format, compareAsc, parse } from "date-fns";
-import PopupMenu from "./popupMenu";
-import Cell from './cell';
+
+
+import Cell from "./cell";
+import PopupCard from "./popupCard";
 
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
-   
+
     this.state = {
-      
       currentMonth: new Date(),
       selectedDate: new Date(),
       events: new Array(42),
+      menus: new Array(42),
+      ishidden: true,
     };
   }
 
@@ -65,49 +68,44 @@ class Calendar extends React.Component {
 
   renderCells = () => {
     const { currentMonth, selectedDate } = this.state;
-  
+
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
 
     const dateFormat = "d";
-  
+
     const rows = [];
     let days = [];
     let day = startDate;
     let formattedDate = "";
     let counter = 0;
-    while (day<= endDate) {
+    while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
-        const cloneDay = day
-   
+        const cloneDay = day;
 
         days.push(
-
-        
-        
-        <Cell
-        day={day}
-        key={"cal_"+counter}
-        i={counter}
-        formattedDate={formattedDate}
-        monthStart={monthStart}
-        selectedDate={selectedDate}
-        events={this.state.events[counter]}
-        cloneDay={cloneDay}
-        onDateClick={(cloneDay) => this.onDateClick(cloneDay)}
-        handleAddEvent={(index) => this.handleAddEvent(index)}
-        >
-         
-
-
-        </Cell>);
+      
+          <Cell
+            day={day}
+            key={"cal_" + counter}
+            i={counter}
+            formattedDate={formattedDate}
+            monthStart={monthStart}
+            selectedDate={selectedDate}
+            events={this.state.events[counter]}
+            menus={this.state.menus[counter]}
+            cloneDay={cloneDay}
+            onDateClick={(cloneDay) => this.onDateClick(cloneDay)}
+            handleAddEvent={(index) => this.handleAddEvent(index)}
+           // handleAddMenu={(index) => this.handleAddMenu(index)}
+          ></Cell>
+        );
         day = addDays(day, 1);
         counter++;
       }
-
 
       rows.push(
         <div className="row" key={day}>
@@ -119,7 +117,7 @@ class Calendar extends React.Component {
     }
 
     return <div className="body">{rows}</div>;
-  }
+  };
 
   onDateClick = (day) => {
     this.setState({
@@ -129,19 +127,19 @@ class Calendar extends React.Component {
     // <Event day={day} priority={1} name={"Event"} setTime={"4:50"}  />
   };
 
- 
+  
 
   handleAddEvent = (index) => {
-
     var arr = this.state.events;
 
-    if (arr[index] == undefined || arr[index] == null || arr[index].length == 0)
-    {
-        arr[index] = []
+    if (
+      arr[index] == undefined ||
+      arr[index] == null ||
+      arr[index].length == 0
+    ) {
+      arr[index] = [];
     }
-    arr[index].push(
-      { priority:1, name:"Event", setTime:"4:50" }
-    );
+    arr[index].push({ priority: 1, name: "Event", setTime: "4:50" });
 
     this.setState({
       events: arr,
